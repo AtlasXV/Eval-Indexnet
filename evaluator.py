@@ -1,6 +1,7 @@
 import os
 import time
 import utils
+import cv2
 
 class Eval_thread():
     def __init__(self, loader, method, dataset, output_dir, cuda):
@@ -28,7 +29,9 @@ class Eval_thread():
         print('eval[SAD]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_sad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            sad = utils.compute_sad_loss(pred, gt, gt)
+            predImage = cv2.imread(pred)
+            gtImage = cv2.imread(gt)
+            sad = utils.compute_sad_loss(predImage, gtImage, gtImage)
             avg_sad += sad
             img_num += 1.0
         avg_sad /= img_num
@@ -36,33 +39,39 @@ class Eval_thread():
 
     def Eval_mse(self):
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
-        avg_sad, img_num = 0.0, 0.0
+        avg_mse, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            sad = utils.compute_mse_loss(pred, gt, gt)
-            avg_sad += sad
+            predImage = cv2.imread(pred)
+            gtImage = cv2.imread(gt)
+            mse = utils.compute_mse_loss(predImage, gtImage, gtImage)
+            avg_mse += mse
             img_num += 1.0
-        avg_sad /= img_num
-        return avg_sad.item()
+        avg_mse /= img_num
+        return avg_mse.item()
 
     def Eval_grad(self):
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
-        avg_sad, img_num = 0.0, 0.0
+        avg_grad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            sad = utils.compute_gradient_loss(pred, gt, gt)
-            avg_sad += sad
+            predImage = cv2.imread(pred)
+            gtImage = cv2.imread(gt)
+            grad = utils.compute_gradient_loss(predImage, gtImage, gtImage)
+            avg_grad += grad
             img_num += 1.0
-        avg_sad /= img_num
-        return avg_sad.item()
+        avg_grad /= img_num
+        return avg_grad.item()
 
     def Eval_conn(self):
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
-        avg_sad, img_num = 0.0, 0.0
+        avg_conn, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            sad = utils.compute_connectivity_loss(pred, gt, gt)
-            avg_sad += sad
+            predImage = cv2.imread(pred)
+            gtImage = cv2.imread(gt)            
+            conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage)
+            avg_conn += conn
             img_num += 1.0
-        avg_sad /= img_num
-        return avg_sad.item()
+        avg_conn /= img_num
+        return avg_conn.item()
 
     def LOG(self, output):
         with open(self.logfile, 'a') as f:
