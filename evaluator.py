@@ -15,10 +15,13 @@ class Eval_thread():
 
     def run(self):
         start_time = time.time()
-        sad = self.Eval_sad()
-        mse = self.Eval_mse()
+        sad = 0
+        mse = 0
+        conn = 0
+        # sad = self.Eval_sad()
+        # mse = self.Eval_mse()
         grad = self.Eval_grad()
-        conn = self.Eval_conn()
+        # conn = self.Eval_conn()
 
         self.LOG(
             '{} ({}): {:.4f} sad || {:.4f} mse|| {:.4f} grad || {:.4f} conn\n'
@@ -68,7 +71,7 @@ class Eval_thread():
         for pred, gt in self.loader:
             predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
             gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)           
-            conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage)
+            conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage, 0.1)
             avg_conn += conn
             img_num += 1.0
         avg_conn /= img_num
