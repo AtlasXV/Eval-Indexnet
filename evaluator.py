@@ -18,7 +18,8 @@ class Eval_thread():
         sad = self.Eval_sad()
         mse = self.Eval_mse()
         grad = self.Eval_grad()
-        conn = self.Eval_conn()
+        conn = 0
+        # conn = self.Eval_conn()
 
         self.LOG(
             '{} ({}): {:.4f} sad || {:.4f} mse|| {:.4f} grad || {:.4f} conn\n'
@@ -36,6 +37,8 @@ class Eval_thread():
             avg_sad += sad
             img_num += 1.0
         avg_sad /= img_num
+        print('eval[SAD] score:{}'.format(avg_sad))
+
         return avg_sad.item()
 
     def Eval_mse(self):
@@ -48,6 +51,8 @@ class Eval_thread():
             avg_mse += mse
             img_num += 1.0
         avg_mse /= img_num
+        print('eval[MSE] score:{}'.format(avg_mse))
+
         return avg_mse.item()
 
     def Eval_grad(self):
@@ -57,9 +62,11 @@ class Eval_thread():
             predImage = numpy.array(pred)
             gtImage = numpy.array(gt)
             grad = utils.compute_gradient_loss(predImage, gtImage, gtImage)
-            avg_grad += grad / 1000
+            avg_grad += grad
             img_num += 1.0
         avg_grad /= img_num
+        print('eval[Gradient] score:{}'.format(avg_grad))
+
         return avg_grad.item()
 
     def Eval_conn(self):
@@ -69,9 +76,11 @@ class Eval_thread():
             predImage = numpy.array(pred)
             gtImage = numpy.array(gt)   
             conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage, 0.1)
-            avg_conn += conn / 1000
+            avg_conn += conn
             img_num += 1.0
         avg_conn /= img_num
+        print('eval[Connectivity] score:{}'.format(avg_conn))
+
         return avg_conn.item()
 
     def LOG(self, output):
