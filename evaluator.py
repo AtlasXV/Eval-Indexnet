@@ -15,13 +15,10 @@ class Eval_thread():
 
     def run(self):
         start_time = time.time()
-        sad = 0
-        mse = 0
-        conn = 0
-        # sad = self.Eval_sad()
-        # mse = self.Eval_mse()
+        sad = self.Eval_sad()
+        mse = self.Eval_mse()
         grad = self.Eval_grad()
-        # conn = self.Eval_conn()
+        conn = self.Eval_conn()
 
         self.LOG(
             '{} ({}): {:.4f} sad || {:.4f} mse|| {:.4f} grad || {:.4f} conn\n'
@@ -33,8 +30,8 @@ class Eval_thread():
         print('eval[SAD]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_sad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
-            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)
+            predImage = numpy.array(pred)
+            gtImage = numpy.array(gt)
             sad = utils.compute_sad_loss(predImage, gtImage, gtImage)
             avg_sad += sad
             img_num += 1.0
@@ -45,8 +42,8 @@ class Eval_thread():
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_mse, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
-            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)
+            predImage = numpy.array(pred)
+            gtImage = numpy.array(gt)
             mse = utils.compute_mse_loss(predImage, gtImage, gtImage)
             avg_mse += mse
             img_num += 1.0
@@ -60,7 +57,7 @@ class Eval_thread():
             predImage = numpy.array(pred)
             gtImage = numpy.array(gt)
             grad = utils.compute_gradient_loss(predImage, gtImage, gtImage)
-            avg_grad += grad
+            avg_grad += grad / 1000
             img_num += 1.0
         avg_grad /= img_num
         return avg_grad.item()
@@ -69,10 +66,10 @@ class Eval_thread():
         print('eval[Connectivity]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_conn, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
-            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)           
+            predImage = numpy.array(pred)
+            gtImage = numpy.array(gt)   
             conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage, 0.1)
-            avg_conn += conn
+            avg_conn += conn / 1000
             img_num += 1.0
         avg_conn /= img_num
         return avg_conn.item()
