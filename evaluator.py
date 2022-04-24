@@ -29,6 +29,8 @@ class Eval_thread():
         print('eval[SAD]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_sad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
+            print('pred: {}'.format(pred))
+            print('gt: {}'.format(gt))
             predImage = cv2.imread(pred)
             gtImage = cv2.imread(gt)
             sad = utils.compute_sad_loss(predImage, gtImage, gtImage)
