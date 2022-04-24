@@ -51,7 +51,7 @@ class Eval_thread():
         return avg_mse.item()
 
     def Eval_grad(self):
-        print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
+        print('eval[Gradient]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_grad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
             predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
@@ -63,7 +63,7 @@ class Eval_thread():
         return avg_grad.item()
 
     def Eval_conn(self):
-        print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
+        print('eval[Connectivity]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_conn, img_num = 0.0, 0.0
         for pred, gt in self.loader:
             predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
