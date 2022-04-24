@@ -57,15 +57,15 @@ def compute_mse_loss(pd, gt, mask):
 
 # compute the gradient error
 def compute_gradient_loss(pd, gt, mask):
+    
     cv.normalize(pd, pd, 0.0, 255.0, cv.NORM_MINMAX, dtype=cv.CV_32F)
     cv.normalize(gt, gt, 0.0, 255.0, cv.NORM_MINMAX, dtype=cv.CV_32F)
     pd = pd / 255.
     gt = gt / 255.
-    print('pd: {}'.format(pd))
-    pd_x = gaussian_filter(pd, sigma=(1.4, 0), order=[1, 0], output=np.float32)
-    pd_y = gaussian_filter(pd, sigma=(0, 1.4), order=[0, 1], output=np.float32)
-    gt_x = gaussian_filter(gt, sigma=(1.4, 0), order=[1, 0], output=np.float32)
-    gt_y = gaussian_filter(gt, sigma=(0, 1.4), order=[0, 1], output=np.float32)
+    pd_x = gaussian_filter(pd, sigma=1.4, order=[1, 0], output=np.float32)
+    pd_y = gaussian_filter(pd, sigma=1.4, order=[0, 1], output=np.float32)
+    gt_x = gaussian_filter(gt, sigma=1.4, order=[1, 0], output=np.float32)
+    gt_y = gaussian_filter(gt, sigma=1.4, order=[0, 1], output=np.float32)
     pd_mag = np.sqrt(pd_x**2 + pd_y**2)
     gt_mag = np.sqrt(gt_x**2 + gt_y**2)
 

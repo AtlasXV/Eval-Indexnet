@@ -57,8 +57,8 @@ class Eval_thread():
         print('eval[Gradient]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_grad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
-            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)
+            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2GRAY)
+            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2GRAY)
             grad = utils.compute_gradient_loss(predImage, gtImage, gtImage)
             avg_grad += grad
             img_num += 1.0
