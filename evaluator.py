@@ -1,6 +1,7 @@
 import os
 import time
 import utils
+import numpy
 import cv2
 
 class Eval_thread():
@@ -29,10 +30,8 @@ class Eval_thread():
         print('eval[SAD]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_sad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            print('pred: {}'.format(pred))
-            print('gt: {}'.format(gt))
-            predImage = cv2.imread(pred)
-            gtImage = cv2.imread(gt)
+            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
+            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)
             sad = utils.compute_sad_loss(predImage, gtImage, gtImage)
             avg_sad += sad
             img_num += 1.0
@@ -43,8 +42,8 @@ class Eval_thread():
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_mse, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.imread(pred)
-            gtImage = cv2.imread(gt)
+            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
+            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)
             mse = utils.compute_mse_loss(predImage, gtImage, gtImage)
             avg_mse += mse
             img_num += 1.0
@@ -55,8 +54,8 @@ class Eval_thread():
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_grad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.imread(pred)
-            gtImage = cv2.imread(gt)
+            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
+            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)
             grad = utils.compute_gradient_loss(predImage, gtImage, gtImage)
             avg_grad += grad
             img_num += 1.0
@@ -67,8 +66,8 @@ class Eval_thread():
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_conn, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = cv2.imread(pred)
-            gtImage = cv2.imread(gt)            
+            predImage = cv2.cvtColor(numpy.array(pred), cv2.COLOR_RGB2BGR)
+            gtImage = cv2.cvtColor(numpy.array(gt), cv2.COLOR_RGB2BGR)           
             conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage)
             avg_conn += conn
             img_num += 1.0
