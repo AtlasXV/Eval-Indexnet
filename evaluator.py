@@ -1,8 +1,7 @@
 import os
 import time
 import utils
-import numpy
-import cv2
+import numpy as np
 
 class Eval_thread():
     def __init__(self, loader, method, dataset, output_dir, cuda):
@@ -30,9 +29,11 @@ class Eval_thread():
         print('eval[SAD]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_sad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = numpy.array(pred)
-            gtImage = numpy.array(gt)
-            sad = utils.compute_sad_loss(predImage, gtImage, gtImage)
+            predImage = np.array(pred)
+            gtImage = np.array(gt)
+            maskImage = gtImage.copy()
+            maskImage[maskImage >= 0] = 1
+            sad = utils.compute_sad_loss(predImage, gtImage, maskImage)
             avg_sad += sad
             img_num += 1.0
         avg_sad /= img_num
@@ -44,9 +45,11 @@ class Eval_thread():
         print('eval[MSE]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_mse, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = numpy.array(pred)
-            gtImage = numpy.array(gt)
-            mse = utils.compute_mse_loss(predImage, gtImage, gtImage)
+            predImage = np.array(pred)
+            gtImage = np.array(gt)
+            maskImage = gtImage.copy()
+            maskImage[maskImage >= 0] = 1
+            mse = utils.compute_mse_loss(predImage, gtImage, maskImage)
             avg_mse += mse
             img_num += 1.0
         avg_mse /= img_num
@@ -58,9 +61,11 @@ class Eval_thread():
         print('eval[Gradient]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_grad, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = numpy.array(pred)
-            gtImage = numpy.array(gt)
-            grad = utils.compute_gradient_loss(predImage, gtImage, gtImage)
+            predImage = np.array(pred)
+            gtImage = np.array(gt)
+            maskImage = gtImage.copy()
+            maskImage[maskImage >= 0] = 1
+            grad = utils.compute_gradient_loss(predImage, gtImage, maskImage)
             avg_grad += grad
             img_num += 1.0
         avg_grad /= img_num
@@ -72,9 +77,11 @@ class Eval_thread():
         print('eval[Connectivity]:{} dataset with {} method.'.format(self.dataset, self.method))
         avg_conn, img_num = 0.0, 0.0
         for pred, gt in self.loader:
-            predImage = numpy.array(pred)
-            gtImage = numpy.array(gt)   
-            conn = utils.compute_connectivity_loss(predImage, gtImage, gtImage)
+            predImage = np.array(pred)
+            gtImage = np.array(gt)
+            maskImage = gtImage.copy()
+            maskImage[maskImage >= 0] = 1
+            conn = utils.compute_connectivity_loss(predImage, gtImage, maskImage)
             avg_conn += conn
             img_num += 1.0
         avg_conn /= img_num
