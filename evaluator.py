@@ -20,9 +20,9 @@ class Eval_thread():
         conn = self.Eval_conn()
 
         self.LOG(
-            '{} ({}): | {:.4f} sad | {:.4f} mse | {:.4f} grad | {:.4f} conn |\n'
+            '| {} ({}): | {:.4f} sad | {:.4f} mse | {:.4f} grad | {:.4f} conn |\n'
             .format(self.dataset, self.method, sad, mse, grad, conn))
-        return '[cost:{:.4f}s] {} ({}): {:.4f} | sad | {:.4f} mse | {:.4f} grad | {:.4f} conn |'.format(
+        return '[cost:{:.4f}s] | {} ({}): | {:.4f} sad | {:.4f} mse | {:.4f} grad | {:.4f} conn |'.format(
             time.time() - start_time, self.dataset, self.method, sad, mse, grad, conn)
 
     def Eval_sad(self):
