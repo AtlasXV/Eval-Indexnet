@@ -6,6 +6,7 @@ import os
 from dataloader import EvalDataset
 from evaluator import Eval_thread
 
+
 def main(cfg):
     root_dir = cfg.root_dir
     if cfg.save_dir is not None:
@@ -14,6 +15,7 @@ def main(cfg):
         output_dir = root_dir
     gt_dir = osp.join(root_dir, 'gt')
     pred_dir = osp.join(root_dir, 'pred')
+    trimap_dir = osp.join(root_dir, 'trimap')
     if cfg.methods is None:
         method_names = os.listdir(pred_dir)
     else:
@@ -28,8 +30,10 @@ def main(cfg):
         for method in method_names:
             try:
                 loader = EvalDataset(osp.join(pred_dir, method, dataset),
-                                    osp.join(gt_dir, dataset))
-                thread = Eval_thread(loader, method, dataset, output_dir, cfg.cuda)
+                                     osp.join(gt_dir, dataset),
+                                     osp.join(trimap_dir, dataset))
+                thread = Eval_thread(
+                    loader, method, dataset, output_dir, cfg.cuda)
                 threads.append(thread)
             except Exception as error:
                 print('Caught this error: ' + repr(error))
